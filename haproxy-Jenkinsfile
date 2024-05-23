@@ -199,9 +199,10 @@ pipeline {
 								if(application =='SOMNCE'&& (!haproxyFromParamArray.contains("ALL"))){
 									HAProxyServers = haproxyFromParamArray
 									som_servers = backendServersFromParamArray
-									def backendWithPortMap = [(backendFromParamArray.toString()):portFromParamArray] 
+									def backendWithPortMap = [(backendFromParam.toString()):portFromParamArray] 
 									println "backendWithPortMap" + backendWithPortMap
 									backendWithPort = backendWithPortMap	
+									println "backendFromParam"+backendFromParam
 									println "HAProxy server selected from parameter: " + HAProxyServers
 									println "backend selected from parameter: " + siebel_backend
 									println "backend server selected from parameter: " + siebel_servers
