@@ -195,14 +195,6 @@ pipeline {
 								def SOMResult
 								def SOMGlobalLeadResult
 								
-								
-								if(application =='ALL'|| (application = 'SOMNCE'&&haproxyFromParamArray.contains("ALL") && backendFromParamArray.contains("ALL") && backendServersFromParamArray.contains("ALL")) {
-									SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, 'disable', sockFileLoc )
-									publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
-									SOMGlobalLeadResult = performActionOnSOM(HAProxyServers, backendPortGlobalLeadMGMT, som_global_lead_mgmt_server, 'disable', sockFileLoc )
-									publishResults = publishResults + "SOM GLOBAL LEAD: " + SOMGlobalLeadResult+ "\n"
-								
-								}
 								if(application =='SOMNCE' && haproxyFromParamArray.contains("ALL") && backendFromParamArray.contains("ALL") && backendServersFromParamArray.contains("ALL")) {
 									SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, 'disable', sockFileLoc )
 									publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
