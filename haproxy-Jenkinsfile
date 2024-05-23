@@ -43,7 +43,14 @@ pipeline {
 									println "backend selected from parameter: " + backend
 									println "backend server selected from parameter: " + css_servers
 								}
-								
+								if(action=='Pre-Patching'){
+									action='drain'
+								}	
+								if(action=='Post-Patching'){
+									action='ready'
+								}
+								result = performAction(HAProxyServers, backend, css_servers, action, sockFileLoc )
+								/*	
 								if(action=='Pre-Patching'||action=='drain')
 								{	
 									result = performAction(HAProxyServers, backend, css_servers, 'drain', sockFileLoc )
@@ -55,7 +62,7 @@ pipeline {
 								else if(action =='maint')
 								{
 									result = performAction(HAProxyServers, backend, css_servers, 'maint', sockFileLoc )
-								}	
+								}*/	
 								publishResults = publishResults + "CSSNCE " + result+ "\n"									
 							}catch(Exception e) {
 								result ='Failed'
@@ -87,6 +94,13 @@ pipeline {
 								def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
 								def result =''
 
+								if(action=='Pre-Patching'){
+									action='drain'
+								}	
+								if(action=='Post-Patching'){
+									action='ready'
+								}
+								
 								if(application =='GPDNCE'&& (!haproxyFromParamArray.contains("ALL"))){
 									HAProxyServers = haproxyFromParamArray
 									gpd_servers = backendServersFromParamArray
@@ -96,6 +110,8 @@ pipeline {
 									println "backend server selected from parameter: " + gpd_servers
 								}
 								
+								result = performAction(HAProxyServers, backend, gpd_server, action, sockFileLoc )
+								/*
 								if(action=='Pre-Patching'||action=='drain')
 									
 								{	
@@ -108,7 +124,8 @@ pipeline {
 								else if(action =='maint')
 								{
 									result =performAction(HAProxyServers, backend, gpd_server, 'maint', sockFileLoc )
-								}					
+								}*/	
+								
 								publishResults = publishResults + "GPDNCE: " + result+ "\n"
 								
 							}catch(Exception e) {
@@ -140,7 +157,14 @@ pipeline {
 								def backendServersFromParamArray = Arrays.asList((backendServersFromParam).split(","))
 								def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
 								def result
-
+								
+								if(action=='Pre-Patching'){
+									action='drain'
+								}	
+								if(action=='Post-Patching'){
+									action='ready'
+								}
+								
 								if(application =='SiebelNCE'&& (!haproxyFromParamArray.contains("ALL"))){
 									HAProxyServers = haproxyFromParamArray
 									siebel_servers = backendServersFromParamArray
@@ -149,14 +173,8 @@ pipeline {
 									println "backend selected from parameter: " + siebel_backend
 									println "backend server selected from parameter: " + siebel_servers
 								}								
-								if(action=='Pre-Patching'||action=='maint')
-									{	
-										result =performAction(HAProxyServers, siebel_backend, siebel_servers, 'maint', sockFileLoc )
-									}
-									else if(action=='Post-Patching'||action=='ready')
-									{
-										result =performAction(HAProxyServers, siebel_backend, siebel_servers, 'ready', sockFileLoc )
-									}	
+								
+								result =performAction(HAProxyServers, siebel_backend, siebel_servers, action , sockFileLoc )
 									
 								publishResults = publishResults + "SiebelNCE: " + result+ "\n"
 								
@@ -195,6 +213,12 @@ pipeline {
 								def SOMResult
 								def SOMGlobalLeadResult
 								
+								if(action=='Pre-Patching'){
+									action='disable'
+								}	
+								if(action=='Post-Patching'){
+									action='enable'
+								}								
 								
 								if(application =='SOMNCE'&& (!haproxyFromParamArray.contains("ALL"))){
 									HAProxyServers = haproxyFromParamArray
@@ -203,46 +227,20 @@ pipeline {
 									println "backend from param: "+backendFromParam
 									println "HAProxy server selected from parameter: " + HAProxyServers
 									println "backend server selected from parameter" + som_servers
-									
 									backendWithPort = backendWithPortMap	
 									println "backendWithPortMap" + backendWithPortMap
+									SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, action, sockFileLoc )
+									publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
 									
 								}
 								
-								if(action=='Pre-Patching'||action=='disable')
-									{	
-										println "mamta--"
-										SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, 'disable', sockFileLoc )
-										publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
-										SOMGlobalLeadResult = performActionOnSOM(HAProxyServers, backendPortGlobalLeadMGMT, som_global_lead_mgmt_server, 'disable', sockFileLoc )
-										publishResults = publishResults + "SOM GLOBAL LEAD: " + SOMGlobalLeadResult+ "\n"
-									}
-									else if(action=='Post-Patching'||action=='enable')
-									{
-										println "--mamta--"
-										SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, 'enable', sockFileLoc )
-										publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
-										SOMGlobalLeadResult = performActionOnSOM(HAProxyServers, backendPortGlobalLeadMGMT, som_global_lead_mgmt_server, 'enable', sockFileLoc )
-										publishResults = publishResults + "SOM GLOBAL LEAD: " + SOMGlobalLeadResult+ "\n"
-									}	
+								else{ 
 									
-								publishResults = publishResults + "SiebelNCE: " + result+ "\n"
-								
-								/*if(application =='SOMNCE' && haproxyFromParamArray.contains("ALL") && backendFromParamArray.contains("ALL") && backendServersFromParamArray.contains("ALL")) {
-									SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, 'disable', sockFileLoc )
+									SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, action, sockFileLoc )
 									publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
-									SOMGlobalLeadResult = performActionOnSOM(HAProxyServers, backendPortGlobalLeadMGMT, som_global_lead_mgmt_server, 'disable', sockFileLoc )
-									publishResults = publishResults + "SOM GLOBAL LEAD: " + SOMGlobalLeadResult+ "\n"
-								}	
-								else 
-								{	
-									performActionOnSOMFromParam(haproxyFromParamArray,backendFromParam,backendServersFromParamArray,portFromParamArray,'disable', sockFileLoc)	
-									//publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
-								}*/
-							
-							
-						//def SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, action, sockFileLoc )				
-						//publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
+									SOMGlobalLeadResult = performActionOnSOM(HAProxyServers, backendPortGlobalLeadMGMT, som_global_lead_mgmt_server, action, sockFileLoc )
+									publishResults = publishResults + "SOM GLOBAL LEAD: " + SOMGlobalLeadResult+ "\n"	
+								}
 
 							}catch(Exception e) {
 								SOMResult ='Failed'
@@ -312,31 +310,3 @@ def performActionOnSOM(Object haproxyservers, Object backendWithPort, Object ser
 	}
 	return result
 }
-def performActionOnSOMFromParam(Object haproxyservers, String backend, Object servers, Object port, String action, Object sockfileloc ){
-	def result ='Success'
-	def backend_server
-	def backend_server_list =[]
-	println "haproxyservers"+ haproxyservers
-	println "backend"+backend
-	println "servers"+servers
-	println "port "+ port
-	
-	for(server in servers)
-	{
-		for(p in port){
-			backend_server =server + '-' +p
-			backend_server_list.add(backend_server)
-			
-		}
-	}
-	println backend_server_list
-	for(ha in haproxyservers) {
-		def SSH_OPTION="ssh jenkins_worker@${ha} -o StrictHostKeyChecking=no"
-		for(server in backend_server_list) {
-			println "$SSH_OPTION  -o LogLevel=error 'echo $action server $backend/$server | sudo socat stdio $sockfileloc'"
-			//ssh "$SSH_OPTION  -o LogLevel=error 'echo $action server $backend/$server | sudo socat stdio $sockfileloc'"
-		}		
-	}
-	return result
-}
-
