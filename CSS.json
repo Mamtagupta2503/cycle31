@@ -16,8 +16,8 @@
 		"prod_vm0pncssxxa0004_nce_7131",
 		"prod_vm0pncssxxa0005_nce_7130",
 		"prod_vm0pncssxxa0005_nce_7131",
-		"prod_vm0pncssxxa0006_nce_7230",
-		"prod_vm0pncssxxa0006_nce_7232"
+		"prod_vm0pncssxxa0008_nce_7130",
+		"prod_vm0pncssxxa0008_nce_7131"
 	],
 
 	"CSS_BACKENDS": [
@@ -27,4 +27,3 @@
 	],
 	"SOCKFILE": "/data/apps/haproxy/haproxy_sock"
 }
-
