@@ -1,0 +1,19 @@
+{
+	"HAPROXY_SERVERS": [
+		"142.136.81.131",
+		"142.136.81.130",
+		"142.136.168.38",
+		"142.136.168.37"
+	],
+	"GPD_NCW_SERVERS": [
+		"prod_vm0pncssxxa0006_nce_7230",
+		"prod_vm0pncssxxa0006_nce_7232",
+		"prod_vm0pncssxxa0007_nce_7230",
+		"prod_vm0pncssxxa0007_nce_7232"		
+	],
+	"GPD_BACKEND": [
+		"www-gpd-ssl"		
+	],
+	"SOCKFILE": "/data/apps/haproxy/haproxy_sock"
+}
+
