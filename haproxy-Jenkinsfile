@@ -87,7 +87,7 @@ pipeline {
 								def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
 								def result =''
 
-								if(application =='GPDNCE'){
+								if(application =='GPDNCE'&& (!haproxyFromParamArray.contains("ALL"))){
 									HAProxyServers = haproxyFromParamArray
 									gpd_servers = backendServersFromParamArray
 									backend = backendFromParamArray
@@ -141,7 +141,7 @@ pipeline {
 								def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
 								def result
 
-								if(application =='SiebelNCE'){
+								if(application =='SiebelNCE'&& (!haproxyFromParamArray.contains("ALL"))){
 									HAProxyServers = haproxyFromParamArray
 									siebel_servers = backendServersFromParamArray
 									siebel_backend = backendFromParamArray
@@ -195,7 +195,39 @@ pipeline {
 								def SOMResult
 								def SOMGlobalLeadResult
 								
-								if(application =='SOMNCE' && haproxyFromParamArray.contains("ALL") && backendFromParamArray.contains("ALL") && backendServersFromParamArray.contains("ALL")) {
+								
+								if(application =='SOMNCE'&& (!haproxyFromParamArray.contains("ALL"))){
+									HAProxyServers = haproxyFromParamArray
+									som_servers = backendServersFromParamArray
+									def backendWithPortMap = [backendFromParamArray.toString():portFromParamArray] 
+									println "backendWithPortMap" + backendWithPortMap
+									backendWithPort = backendWithPortMap	
+									println "HAProxy server selected from parameter: " + HAProxyServers
+									println "backend selected from parameter: " + siebel_backend
+									println "backend server selected from parameter: " + siebel_servers
+									
+								}
+								
+								if(action=='Pre-Patching'||action=='disable')
+									{	
+										println "mamta--"
+										SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, 'disable', sockFileLoc )
+										publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
+										SOMGlobalLeadResult = performActionOnSOM(HAProxyServers, backendPortGlobalLeadMGMT, som_global_lead_mgmt_server, 'disable', sockFileLoc )
+										publishResults = publishResults + "SOM GLOBAL LEAD: " + SOMGlobalLeadResult+ "\n"
+									}
+									else if(action=='Post-Patching'||action=='enable')
+									{
+										println "--mamta--"
+										SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, 'enable', sockFileLoc )
+										publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
+										SOMGlobalLeadResult = performActionOnSOM(HAProxyServers, backendPortGlobalLeadMGMT, som_global_lead_mgmt_server, 'enable', sockFileLoc )
+										publishResults = publishResults + "SOM GLOBAL LEAD: " + SOMGlobalLeadResult+ "\n"
+									}	
+									
+								publishResults = publishResults + "SiebelNCE: " + result+ "\n"
+								
+								/*if(application =='SOMNCE' && haproxyFromParamArray.contains("ALL") && backendFromParamArray.contains("ALL") && backendServersFromParamArray.contains("ALL")) {
 									SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, 'disable', sockFileLoc )
 									publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
 									SOMGlobalLeadResult = performActionOnSOM(HAProxyServers, backendPortGlobalLeadMGMT, som_global_lead_mgmt_server, 'disable', sockFileLoc )
@@ -205,7 +237,7 @@ pipeline {
 								{	
 									performActionOnSOMFromParam(haproxyFromParamArray,backendFromParam,backendServersFromParamArray,portFromParamArray,'disable', sockFileLoc)	
 									//publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
-								}
+								}*/
 							
 							
 						//def SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, action, sockFileLoc )				
