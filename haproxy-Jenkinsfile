@@ -16,9 +16,13 @@ pipeline {
 			steps {
 				script{
 					println "pre-execution to add parameter validations"
-					println haproxyFromParam
-					def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
-					println haproxyFromParamArray
+					if(application!='ALL'){
+						def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
+						println haproxyFromParamArray
+						if(haproxyFromParamArray.contains("ALL")){
+							println haproxyFromParamArray.size() 
+						}
+					}
 				}
 			}			
 			
