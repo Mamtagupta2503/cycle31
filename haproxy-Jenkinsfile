@@ -18,6 +18,7 @@ pipeline {
 					println "pre-execution to add parameter validations"
 					if(application!='ALL'){
 						def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
+						def portFromParamArray =Arrays.asList((portFromParam).split(","))
 						println haproxyFromParamArray
 						if(haproxyFromParamArray.contains("ALL")){
 							if(haproxyFromParamArray.size()>1)
@@ -25,6 +26,10 @@ pipeline {
 								println "haproxy selected from job parameter: " +haproxyFromParamArray
 								println "incorrect parameter selection, ignoring separate haproxy because option ALL already covers it"	
 							} 
+						}
+						if(portFromParamArray.contains("Failed"))
+						{
+							println "Port selection failed, SOMNCE will be skipped"
 						}
 					}
 				}
@@ -236,10 +241,15 @@ pipeline {
 									println "backend from param: "+backendFromParam
 									println "HAProxy server selected from parameter: " + HAProxyServers
 									println "backend server selected from parameter" + som_servers
-									backendWithPort = backendWithPortMap	
-									println "backendWithPortMap" + backendWithPortMap
-									SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, stageAction, sockFileLoc )
-									publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
+									if(!backendWithPort.contains("Failed")){
+										backendWithPort = backendWithPortMap	
+										println "backendWithPortMap" + backendWithPortMap
+										SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, stageAction, sockFileLoc )
+										publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
+									}
+									else if(backendWithPort.contains("Failed"))){
+										println "Ignoring action due to incorrect parameter selection"
+									}
 									
 								}
 								
