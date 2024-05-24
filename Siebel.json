@@ -5,12 +5,12 @@
 		"142.136.168.38",
 		"142.136.168.37"
 	],
-	"SIEBEL_NCW_SERVERS": [
+	"SIEBEL_NCE_SERVERS": [
 		"prod_VM0PWSBLPRW0001",
 		"prod_VM0PWSBLPRW0002"
 	],
 
-	"SIEBEL_NCW_BACKEND": [
+	"SIEBEL_NCE_BACKEND": [
 		"www-siebel-nce-ssl"
 	],
 	"SOCKFILE": "/data/apps/haproxy/haproxy_sock"

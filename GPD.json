@@ -5,7 +5,7 @@
 		"142.136.168.38",
 		"142.136.168.37"
 	],
-	"GPD_NCW_SERVERS": [
+	"GPD_NCE_SERVERS": [
 		"prod_vm0pncssxxa0006_nce_7230",
 		"prod_vm0pncssxxa0006_nce_7232",
 		"prod_vm0pncssxxa0007_nce_7230",

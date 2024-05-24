@@ -5,7 +5,7 @@
 		"142.136.168.38",
 		"142.136.168.37"
 	],
-	"CSS_NCW_SERVERS": [		
+	"CSS_NCE_SERVERS": [		
 		"prod_vm0pncssxxa0001_nce_7130",
 		"prod_vm0pncssxxa0001_nce_7131",
 		"prod_vm0pncssxxa0002_nce_7130",

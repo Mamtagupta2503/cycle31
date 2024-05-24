@@ -24,9 +24,9 @@ pipeline {
 						script{
 							try {
 								println "Performing "+ action +" on application CSSNCE"								
-								def serverDetails = readJSON file: 'CSS.json'
+								def serverDetails = readJSON file: 'Patching_cycle_13/data/CSS.json'
 								def HAProxyServers = serverDetails.HAPROXY_SERVERS 
-								def css_servers = serverDetails.CSS_NCW_SERVERS
+								def css_servers = serverDetails.CSS_NCE_SERVERS
 								def backend = serverDetails.CSS_BACKENDS
 								def sockFileLoc = serverDetails.SOCKFILE
 								def result=''
@@ -84,9 +84,9 @@ pipeline {
 						script{
 							try {
 								println "Performing "+ action +" on application GPDNCE"								
-								def serverDetails = readJSON file: 'GPD.json'
+								def serverDetails = readJSON file: 'Patching_cycle_13/data/GPD.json'
 								def HAProxyServers = serverDetails.HAPROXY_SERVERS 
-								def gpd_servers = serverDetails.GPD_NCW_SERVERS
+								def gpd_servers = serverDetails.GPD_NCE_SERVERS
 								def backend = serverDetails.GPD_BACKEND
 								def sockFileLoc = serverDetails.SOCKFILE
 								def backendFromParamArray =Arrays.asList((backendFromParam).split(","))
@@ -110,7 +110,7 @@ pipeline {
 									println "backend server selected from parameter: " + gpd_servers
 								}
 								
-								result = performAction(HAProxyServers, backend, gpd_server, action, sockFileLoc )
+								result = performAction(HAProxyServers, backend, gpd_servers, action, sockFileLoc )
 								/*
 								if(action=='Pre-Patching'||action=='drain')
 									
@@ -148,10 +148,10 @@ pipeline {
 						script{
 							try {
 								println "Performing "+ action +" on application SiebelNCE"
-								def serverDetails = readJSON file: 'Siebel.json'
+								def serverDetails = readJSON file: 'Patching_cycle_13/data/Siebel.json'
 								def HAProxyServers = serverDetails.HAPROXY_SERVERS 
-								def siebel_servers = serverDetails.SIEBEL_NCW_SERVERS
-								def siebel_backend= serverDetails.SIEBEL_NCW_BACKEND
+								def siebel_servers = serverDetails.SIEBEL_NCE_SERVERS
+								def siebel_backend= serverDetails.SIEBEL_NCE_BACKEND
 								def sockFileLoc = serverDetails.SOCKFILE
 								def backendFromParamArray =Arrays.asList((backendFromParam).split(","))
 								def backendServersFromParamArray = Arrays.asList((backendServersFromParam).split(","))
@@ -159,7 +159,7 @@ pipeline {
 								def result
 								
 								if(action=='Pre-Patching'){
-									action='drain'
+									action='maint'
 								}	
 								if(action=='Post-Patching'){
 									action='ready'
@@ -198,13 +198,13 @@ pipeline {
 						script{
 							try {
 								println "Performing "+ action +" on application SOMNCE"								
-								def serverDetails = readJSON file: 'SOM.json'
+								def serverDetails = readJSON file: 'Patching_cycle_13/data/SOM.json'
 								println "read success"
 								def HAProxyServers = serverDetails.HAPROXY_SERVERS 
-								def som_servers = serverDetails.SOM_NCW_SERVERS
+								def som_servers = serverDetails.SOM_NCE_SERVERS
 								def backendWithPort = serverDetails.BACKEND_PORT
 								def sockFileLoc = serverDetails.SOCKFILE
-								def som_global_lead_mgmt_server= serverDetails.SOM_GLOBAL_LEAD_MANAGEMENT_NCW_SERVERS
+								def som_global_lead_mgmt_server= serverDetails.SOM_GLOBAL_LEAD_MANAGEMENT_NCE_SERVERS
 								def backendPortGlobalLeadMGMT = serverDetails.BACKEND_PORT_SOM_GLOBAL_LEAD_MANAGEMENT
 								def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
 								def backendFromParamArray =Arrays.asList((backendFromParam).split(","))

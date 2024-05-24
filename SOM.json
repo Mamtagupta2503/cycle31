@@ -36,7 +36,7 @@
 		"www-som-ui-ssl": [7210],
 		"www-som-uiapp-ssl": [8210]		
     },
-	"SOM_GLOBAL_LEAD_MANAGEMENT_NCW_SERVERS": [
+	"SOM_GLOBAL_LEAD_MANAGEMENT_NCE_SERVERS": [
         "somprod0001"
     ],
     "BACKEND_PORT_SOM_GLOBAL_LEAD_MANAGEMENT": {
