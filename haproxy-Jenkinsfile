@@ -35,9 +35,12 @@ pipeline {
 								if(action=='Pre-Patching'){
 									stageAction='drain'
 								}	
-								if(action=='Post-Patching'){
+								else if(action=='Post-Patching'){
 									stageAction='ready'
 								}
+								else {
+									stageAction =action
+								} 
 								println "Performing "+ stageAction +" on application CSSNCE"								
 								def serverDetails = readJSON file: 'CSS.json'
 								def HAProxyServers = serverDetails.HAPROXY_SERVERS 
@@ -85,9 +88,13 @@ pipeline {
 								if(action=='Pre-Patching'){
 									stageAction='drain'
 								}	
-								if(action=='Post-Patching'){
+								else if(action=='Post-Patching'){
 									stageAction='ready'
 								}
+								else {
+									stageAction =action
+								} 
+
 								println "Performing "+ stageAction +" on application GPDNCE"								
 								def serverDetails = readJSON file: 'GPD.json'
 								def HAProxyServers = serverDetails.HAPROXY_SERVERS 
@@ -135,9 +142,13 @@ pipeline {
 								if(action=='Pre-Patching'){
 									stageAction='maint'
 								}	
-								if(action=='Post-Patching'){
+								else if(action=='Post-Patching'){
 									stageAction='ready'
 								}
+								else {
+									stageAction =action
+								} 
+
 								println "Performing "+ stageAction +" on application SiebelNCE"
 								def serverDetails = readJSON file: 'Siebel.json'
 								def HAProxyServers = serverDetails.HAPROXY_SERVERS 
@@ -186,10 +197,12 @@ pipeline {
 								if(action=='Pre-Patching'){
 									stageAction='disable'
 								}	
-								if(action=='Post-Patching'){
+								else if(action=='Post-Patching'){
 									stageAction='enable'
-								}								
-								
+								}
+								else {
+									stageAction =action
+								} 
 								println "Performing "+ stageAction +" on application SOMNCE"								
 								def serverDetails = readJSON file: 'SOM.json'
 								println "read success"
