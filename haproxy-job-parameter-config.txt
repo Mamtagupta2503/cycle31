@@ -1,0 +1,263 @@
+1.Active Choices Parameter
+	Name: Application
+	Groovy Script: return['ALL','CSSNCE','GPDNCE','SiebelNCE','SOMNCE']
+	Choice Type: Single Select
+	
+2.Active Choices Reactive Parameter
+	Name: Action
+	Groovy Script: 	
+		if (Application == "ALL") {
+			 return['Pre-Patching','Post-Patching']
+			}
+		if (Application == "CSSNCE" || Application == "GPDNCE") {
+				return['drain','maint','ready']
+			}
+		if (Application == "SiebelNCE") {
+				return['maint','ready']
+			}
+		if (Application =="SOMNCE") {
+				return['enable','disable']
+			}
+				
+	Choice Type: Single Select
+	Referenced parameters :Application
+	
+3.	Type: Active Choices Reactive Parameter
+	Name: haproxy
+	Groovy Script: 
+		if (Application == "CSSNCE"||Application == "GPDNCE"||Application == "SiebelNCE") {
+			return['ALL:selected','142.136.81.131','142.136.81.130','142.136.168.38','142.136.168.37']
+		}	    
+		if (Application == "SOMNCE") {
+			return['ALL:selected','api-haproxy1-prod.nce.webapps.rr.com','api-haproxy2-prod.nce.webapps.rr.com','api-haproxy1-prod.ncw.webapps.rr.com','api-haproxy2-prod.ncw.webapps.rr.com']
+		}
+	Choice Type: Check box
+	Referenced parameters: Application
+
+4.	Type: Active Choices Reactive Parameter
+	Name: backend
+
+if (Application == "CSSNCE" && (haproxy.contains("ALL"))) {
+        return['www-css-iu-ssl:selected:disabled','www-css-ssl:selected:disabled','www-css-ssl2:selected:disabled']
+    }
+	if (Application == "CSSNCE" && (!haproxy.contains("ALL"))) {
+        return['www-css-iu-ssl','www-css-ssl','www-css-ssl2']
+    }
+	if (Application == "GPDNCE" && (haproxy.contains("ALL"))) {
+        return['www-gpd-ssl:selected:disabled']
+    }
+	if (Application == "GPDNCE" && (!haproxy.contains("ALL"))) {
+        return['www-gpd-ssl']
+    }
+    if (Application == "SiebelNCE" &&(!haproxy.contains("ALL"))) {
+        return['www-siebel-nce-ssl']
+    }
+	if (Application == "SiebelNCE" && (haproxy.contains("ALL"))) {
+        return['www-siebel-nce-ssl:selected:disabled']
+    }
+
+	if (Application == "SOMNCE"&& (haproxy.contains("ALL"))) {
+		return['www-som-accountservice-ssl:selected:disabled',
+				'www-som-affiliate-service-ssl:selected:disabled',
+				'www-som-authenticationservice-ssl:selected:disabled',
+				'www-som-billingservice-ssl:selected:disabled',
+				'www-som-configservice-ssl:selected:disabled',
+				'www-som-coreautomationservice-ssl:selected:disabled',
+				'www-som-createlocationservice-ssl:selected:disabled',
+				'www-som-csgleadautomationservice-ssl:selected:disabled',
+				'www-som-customerservice-ssl:selected:disabled',
+				'www-som-json-ssl:selected:disabled',
+				'www-som-jvm:selected:disabled',
+				'www-som-leadhistoryservice-ssl:selected:disabled',
+				'www-som-mdaprocessorservice-ssl:selected:disabled',
+				'www-som-mobileautomationservice-ssl:selected:disabled',
+				'www-som-mobiletokenservice-ssl:selected:disabled',
+				'www-som-orderdetailsservice-ssl:selected:disabled',
+				'www-som-productservice-ssl:selected:disabled',
+				'www-som-programdetailsservice-ssl:selected:disabled',
+				'www-som-schedulingservice-ssl:selected:disabled',
+				'www-som-searchorderservice-ssl:selected:disabled',
+				'www-som-singleswagger-ssl:selected:disabled',
+				'www-som-submitleadservice-ssl:selected:disabled',
+				'www-som-tmsleadmgmtservice-ssl:selected:disabled',
+				'www-som-ui-ssl:selected:disabled',
+				'www-som-uiapp-ssl:selected:disabled',
+				'www-som-globalleadmanagementprocess-ssl:selected:disabled'
+		]
+    }
+	if (Application == "SOMNCE"&& (!haproxy.contains("ALL"))){
+		return['www-som-accountservice-ssl',
+				'www-som-affiliate-service-ssl',
+				'www-som-authenticationservice-ssl',
+				'www-som-billingservice-ssl',
+				'www-som-configservice-ssl',
+				'www-som-coreautomationservice-ssl',
+				'www-som-createlocationservice-ssl',
+				'www-som-csgleadautomationservice-ssl',
+				'www-som-customerservice-ssl',
+				'www-som-json-ssl',
+				'www-som-jvm',
+				'www-som-leadhistoryservice-ssl',
+				'www-som-mdaprocessorservice-ssl',
+				'www-som-mobileautomationservice-ssl',
+				'www-som-mobiletokenservice-ssl',
+				'www-som-orderdetailsservice-ssl',
+				'www-som-productservice-ssl',
+				'www-som-programdetailsservice-ssl',
+				'www-som-schedulingservice-ssl',
+				'www-som-searchorderservice-ssl',
+				'www-som-singleswagger-ssl',
+				'www-som-submitleadservice-ssl',
+				'www-som-tmsleadmgmtservice-ssl',
+				'www-som-ui-ssl',
+				'www-som-uiapp-ssl',
+				'www-som-globalleadmanagementprocess-ssl'
+		]
+	}
+	
+	Choice Type: Check box
+	Referenced parameters: Application,haproxy
+	
+5.	Type: Active Choices Reactive Parameter
+	Name: backend_server
+	Groovy Script:
+		if (Application == "CSSNCE" && (!haproxy.contains("ALL"))) {
+			return[
+				'prod_vm0pncssxxa0001_nce_7130',
+				'prod_vm0pncssxxa0001_nce_7131',
+				'prod_vm0pncssxxa0002_nce_7130',
+				'prod_vm0pncssxxa0002_nce_7131',
+				'prod_vm0pncssxxa0003_nce_7130',
+				'prod_vm0pncssxxa0003_nce_7131',
+				'prod_vm0pncssxxa0004_nce_7130',
+				'prod_vm0pncssxxa0004_nce_7131',
+				'prod_vm0pncssxxa0005_nce_7130',
+				'prod_vm0pncssxxa0005_nce_7131',
+				'prod_vm0pncssxxa0008_nce_7130',
+				'prod_vm0pncssxxa0008_nce_7131'
+			]	
+		}
+		if (Application == "CSSNCE" && (haproxy.contains("ALL"))) {
+			return[
+				'prod_vm0pncssxxa0001_nce_7130:selected:disabled',
+				'prod_vm0pncssxxa0001_nce_7131:selected:disabled',
+				'prod_vm0pncssxxa0002_nce_7130:selected:disabled',
+				'prod_vm0pncssxxa0002_nce_7131:selected:disabled',
+				'prod_vm0pncssxxa0003_nce_7130:selected:disabled',
+				'prod_vm0pncssxxa0003_nce_7131:selected:disabled',
+				'prod_vm0pncssxxa0004_nce_7130:selected:disabled',
+				'prod_vm0pncssxxa0004_nce_7131:selected:disabled',
+				'prod_vm0pncssxxa0005_nce_7130:selected:disabled',
+				'prod_vm0pncssxxa0005_nce_7131:selected:disabled',
+				'prod_vm0pncssxxa0008_nce_7130:selected:disabled',
+				'prod_vm0pncssxxa0008_nce_7131:selected:disabled'
+			]	
+		}
+		if (Application == "GPDNCE" && (!haproxy.contains("ALL"))) {
+			return[
+				'prod_vm0pncssxxa0006_nce_7230',
+				'prod_vm0pncssxxa0006_nce_7232',
+				'prod_vm0pncssxxa0007_nce_7230',
+				'prod_vm0pncssxxa0007_nce_7232'		
+			]	
+		}
+		if (Application == "GPDNCE" && (haproxy.contains("ALL"))) {
+			return[
+				'prod_vm0pncssxxa0006_nce_7230:selected:disabled',
+				'prod_vm0pncssxxa0006_nce_7232:selected:disabled',
+				'prod_vm0pncssxxa0007_nce_7230:selected:disabled',
+				'prod_vm0pncssxxa0007_nce_7232:selected:disabled'		
+			]	
+		}
+		if (Application == "SiebelNCE" && (!haproxy.contains("ALL"))) {
+			return[
+			'prod_VM0PWSBLPRW0001',
+			'prod_VM0PWSBLPRW0002']
+		}
+		if (Application == "SiebelNCE" && (haproxy.contains("ALL"))) {
+			return[
+			'prod_VM0PWSBLPRW0001:selected:disabled',
+			'prod_VM0PWSBLPRW0002:selected:disabled']
+		}
+		if (Application == "SOMNCE" && (haproxy.contains("ALL"))){
+				return['somprod0001:selected:disabled','somprod0002:selected:disabled']
+		}
+		if (Application == "SOMNCE" && (!haproxy.contains("ALL")) && (!backend.contains("www-som-globalleadmanagementprocess-ssl"))){
+				return['somprod0001','somprod0002']
+		}	
+		if (Application == "SOMNCE" && (!haproxy.contains("ALL")) && (backend.contains("www-som-globalleadmanagementprocess-ssl"))){
+				return['somprod0001:selected']
+		}
+
+	Choice Type: Check box
+	Referenced parameters: Application,backend,haproxy
+
+
+6. 	Type: Active Choices Reactive Parameter
+	Name: port
+	Groovy Script:
+		def backendArray = Arrays.asList((backend).split(","))
+		def haproxyArray =Arrays.asList((haproxy).split(","))
+
+		def backendArraySize =backendArray.size()
+		if (Application == "SOMNCE" && (!haproxyArray.contains("ALL")) && backendArraySize>1) {
+		return ['Failed']
+		}
+		else if (Application == "SOMNCE" && backendArraySize==1) {
+
+		if(backend =="www-som-accountservice-ssl") 
+			return[8149,8150,8151]
+		if(backend =="www-som-affiliate-service-ssl")
+			return['8130:selected']
+		if(backend =="www-som-authenticationservice-ssl")
+			return['8136:selected']
+		if(backend =="www-som-billingservice-ssl") 
+			return[8112,8113]
+		if(backend =="www-som-configservice-ssl") 
+			return[8128,8129]
+		if(backend =="www-som-coreautomationservice-ssl")
+			return[8155,8156,8157]
+		if(backend =="www-som-createlocationservice-ssl") 
+			return['8132:selected']
+		if(backend =="www-som-csgleadautomationservice-ssl") 
+			return[8155,8156,8157]
+		if(backend =="www-som-customerservice-ssl") 
+			return[8114,8115]
+		if(backend =="www-som-json-ssl") 
+			return[8110,8111]
+		if(backend =="www-som-jvm") 
+			return['7110:selected']
+		if(backend =="www-som-leadhistoryservice-ssl") 
+			return[8120,8121]
+		if(backend =="www-som-mdaprocessorservice-ssl") 
+			return[8141,8142,8143]
+		if(backend =="www-som-mobileautomationservice-ssl")
+			return['8152:selected']
+		if(backend =="www-som-mobiletokenservice-ssl")
+		  return['8154:selected']
+		if(backend =="www-som-orderdetailsservice-ssl") 
+			return[8122,8123]
+		if(backend =="www-som-productservice-ssl") 
+			return[8124,8125]
+		if(backend =="www-som-programdetailsservice-ssl") 
+			return['8138:selected']
+		if(backend =="www-som-schedulingservice-ssl") 
+			return['8126:selected']
+		if(backend =="www-som-searchorderservice-ssl") 
+			return['8148:selected']
+		if(backend =="www-som-singleswagger-ssl") 
+			return['8140:selected']
+		if(backend =="www-som-submitleadservice-ssl") 
+			return[8159,8160,8161]
+		if(backend =="www-som-tmsleadmgmtservice-ssl") 
+			return['8144:selected']
+		if(backend =="www-som-ui-ssl") 
+			return['7210:selected']
+		if(backend =="www-som-uiapp-ssl") 
+			return['8210:selected']
+		if(backend =="www-som-globalleadmanagementprocess-ssl") 
+			return['8134:selected']
+		}
+	Choice Type: Check box
+	Referenced parameters: Application,backend,haproxy	
+	
