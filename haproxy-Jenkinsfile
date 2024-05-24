@@ -237,11 +237,12 @@ pipeline {
 								if(application =='SOMNCE'&& (!haproxyFromParamArray.contains("ALL"))){
 									HAProxyServers = haproxyFromParamArray
 									som_servers = backendServersFromParamArray
-									def backendWithPortMap = [(backendFromParam.toString()):portFromParamArray] 
+									
 									println "backend from param: "+backendFromParam
 									println "HAProxy server selected from parameter: " + HAProxyServers
 									println "backend server selected from parameter" + som_servers
-									if(!backendWithPort.contains("Failed")){
+									if(!portFromParamArray.contains("Failed")){
+										def backendWithPortMap = [(backendFromParam.toString()):portFromParamArray] 
 										backendWithPort = backendWithPortMap	
 										println "backendWithPortMap" + backendWithPortMap
 										SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, stageAction, sockFileLoc )
