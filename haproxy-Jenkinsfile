@@ -61,19 +61,6 @@ pipeline {
 								}
 								
 								result = performAction(HAProxyServers, backend, css_servers, stageAction, sockFileLoc )
-								/*	
-								if(action=='Pre-Patching'||action=='drain')
-								{	
-									result = performAction(HAProxyServers, backend, css_servers, 'drain', sockFileLoc )
-								}
-								else if(action =='Post-Patching'||action=='ready')
-								{
-									result = performAction(HAProxyServers, backend, css_servers, 'ready', sockFileLoc )
-								}
-								else if(action =='maint')
-								{
-									result = performAction(HAProxyServers, backend, css_servers, 'maint', sockFileLoc )
-								}*/	
 								publishResults = publishResults + "CSSNCE " + result+ "\n"									
 							}catch(Exception e) {
 								result ='Failed'
@@ -121,22 +108,7 @@ pipeline {
 									println "backend server selected from parameter: " + gpd_servers
 								}
 								
-								result = performAction(HAProxyServers, backend, gpd_servers, action, sockFileLoc )
-								/*
-								if(action=='Pre-Patching'||action=='drain')
-									
-								{	
-									result =performAction(HAProxyServers, backend, gpd_servers, 'drain', sockFileLoc )
-								}
-								else if(action=='Post-Patching'||action=='ready')
-								{
-									result =performAction(HAProxyServers, backend, gpd_servers, 'ready', sockFileLoc )
-								}
-								else if(action =='maint')
-								{
-									result =performAction(HAProxyServers, backend, gpd_server, 'maint', sockFileLoc )
-								}*/	
-								
+								result = performAction(HAProxyServers, backend, gpd_servers, stageAction, sockFileLoc )
 								publishResults = publishResults + "GPDNCE: " + result+ "\n"
 								
 							}catch(Exception e) {
