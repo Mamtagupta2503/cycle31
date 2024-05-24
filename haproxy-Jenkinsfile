@@ -20,7 +20,11 @@ pipeline {
 						def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
 						println haproxyFromParamArray
 						if(haproxyFromParamArray.contains("ALL")){
-							println haproxyFromParamArray.size() 
+							if(haproxyFromParamArray.size()>1)
+							{
+								println "haproxy selected from job parameter: " +haproxyFromParamArray
+								println "incorrect parameter selection, ignoring separate haproxy because option ALL already covers it"	
+							} 
 						}
 					}
 				}
