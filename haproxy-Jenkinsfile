@@ -15,6 +15,7 @@ pipeline {
 		stage('Pre-execution'){
 			steps {
 				script{
+					println "pre-execution to add parameter validations"
 				}
 			}			
 			
