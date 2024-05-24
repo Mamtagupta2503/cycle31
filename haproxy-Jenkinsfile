@@ -248,7 +248,7 @@ pipeline {
 										SOMResult = performActionOnSOM(HAProxyServers, backendWithPort, som_servers, stageAction, sockFileLoc )
 										publishResults = publishResults + "SOMNCE: " + SOMResult+ "\n"
 									}
-									else if(backendWithPort.contains("Failed")){
+									else if(portFromParamArray.contains("Failed")){
 										println "Ignoring action due to incorrect parameter selection"
 									}
 									
