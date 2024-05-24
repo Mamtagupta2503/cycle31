@@ -148,7 +148,7 @@ pipeline {
 						script{
 							try {
 								println "Performing "+ action +" on application SiebelNCE"
-								def serverDetails = readJSON file: '/Siebel.json'
+								def serverDetails = readJSON file: 'Siebel.json'
 								def HAProxyServers = serverDetails.HAPROXY_SERVERS 
 								def siebel_servers = serverDetails.SIEBEL_NCE_SERVERS
 								def siebel_backend= serverDetails.SIEBEL_NCE_BACKEND
