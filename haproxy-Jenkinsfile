@@ -320,7 +320,7 @@ def performActionOnSOM(Object haproxyservers, Object backendWithPort, Object ser
 			for(port in bwp.value)
 				{
 					for(s in server) {
-						println "$SSH_OPTION  -o LogLevel=error 'echo $action server $backend/$s-$port | sudo socat stdio $sockfileloc'"
+						println "$SSH_OPTION  -o LogLevel=error 'echo $action server $bwp.key/$s-$port | sudo socat stdio $sockfileloc'"
 						//ssh "$SSH_OPTION  -o LogLevel=error 'echo $action server $backend/$s-$port | sudo socat stdio $sockfileloc'"
 					}
 				}
