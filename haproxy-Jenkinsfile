@@ -308,7 +308,7 @@ def performAction(Object HAProxyServers, Object backend, Object server, String a
 	}
 	return result
 }
-def performActionOnSOM(Object haproxyservers, Object backendWithPort, Object server, String action, Object sockfileloc ){
+def performActionOnSOM(Object haproxyservers, def backendWithPort, Object server, String action, Object sockfileloc ){
 	def result ='Success'
 	def backend
 	def portarray
